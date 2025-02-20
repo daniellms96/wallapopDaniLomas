@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EnUnClick</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+        /* Modo oscuro */
+        body {
+            background-color: #121212;
+            color: #e0e0e0;
+        }
+
+        /* Navbar */
+        .navbar {
+            background-color: #333 !important;
+        }
+
+        .navbar a {
+            color: #fff !important;
+        }
+
+        /* Tarjetas de anuncios */
+        .card {
+            background-color: #1e1e1e;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(255, 255, 255, 0.1);
+            transition: transform 0.2s ease-in-out;
+        }
+
+        .card:hover {
+            transform: scale(1.03);
+        }
+
+        .card-body {
+            color: white;  /* Aseguramos que el texto dentro de la tarjeta sea blanco */
+        }
+
+        .card-title, .card-text {
+            color: white;  /* Aseguramos que el título y el texto dentro de la tarjeta sean blancos */
+        }
+
+        /* Botones */
+        .btn-success {
+            background-color: #28a745;
+            border: none;
+        }
+
+        .btn-success:hover {
+            background-color: #218838;
+        }
+
+        .btn-warning {
+            background-color: #ffc107;
+            border: none;
+            color: #000;
+        }
+
+        .btn-warning:hover {
+            background-color: #e0a800;
+        }
+
+        .btn-danger {
+            background-color: #dc3545;
+            border: none;
+        }
+
+        .btn-danger:hover {
+            background-color: #c82333;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+
+        /* Botón de cerrar sesión rojo */
+        .btn-link {
+            color: #dc3545 !important;
+        }
+
+        /* Imágenes */
+        .card-img-top {
+            border-radius: 10px 10px 0 0;
+            object-fit: cover;
+        }
+
+        /* Mensajes de éxito y error */
+        .alert {
+            background-color: #222;
+            border: 1px solid #444;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container mt-4">
+    <h1 class="text-center">EnUnClick</h1>
+
+    <!-- Mensajes de éxito -->
+    <div th:if="${success}" class="alert alert-success" role="alert">
+        <span th:text="${success}"></span>
+    </div>
+
+    <!-- Mensajes de error -->
+    <div th:if="${error}" class="alert alert-danger" role="alert">
+        <span th:text="${error}"></span>
+    </div>
+
+    <!-- Botón para crear un nuevo anuncio -->
+    <div class="text-center mb-4" sec:authorize="isAuthenticated()">
+        <a href="/anuncios/nuevo" class="btn btn-success">Crear Anuncio</a>
+    </div>
+
+    <!-- Menú de navegación -->
+    <nav class="navbar navbar-expand-lg navbar-dark mb-4">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">Inicio</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item" sec:authorize="isAuthenticated()">
+                        <a class="nav-link" href="/anuncios/mis-anuncios">Mis Anuncios</a>
+                    </li>
+                    <li class="nav-item" sec:authorize="isAuthenticated()">
+                        <span class="nav-link">
+                            <strong>Bienvenido, </strong><span th:text="${#authentication.principal.username}"></span>
+                        </span>
+                    </li>
+                    <li class="nav-item" sec:authorize="isAnonymous()">
+                        <a class="nav-link" href="/login">Iniciar sesión</a>
+                    </li>
+                    <li class="nav-item" sec:authorize="isAuthenticated()">
+                        <form th:action="@{/logout}" method="post">
+                            <button type="submit" class="btn btn-link nav-link">Cerrar sesión</button>
+                        </form>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Listado de anuncios -->
+    <div class="row">
+        <div class="col-md-4 mb-4" th:each="anuncio : ${anuncios}">
+            <div class="card">
+                <img th:if="${not #lists.isEmpty(anuncio.fotos)}"
+                     th:src="@{/uploads/{filename}(filename=${anuncio.fotos.get(0).nombreArchivo})}"
+                     class="card-img-top"
+                     style="height: 250px;"
+                     alt="Imagen del anuncio">
+
+                <div class="card-body text-center">
+                    <h5 class="card-title" th:text="${anuncio.titulo}"></h5>
+                    <p class="card-text">
+                        <strong th:text="${#numbers.formatDecimal(anuncio.precio, 1, 2) + ' €'}"></strong>
+                    </p>
+
+                    <!-- Botones de acción -->
+                    <div class="d-flex justify-content-around">
+                        <a th:href="@{/anuncios/ver/{id}(id=${anuncio.id})}" class="btn btn-primary">Ver</a>
+
+                        <span th:if="${anuncio.usuario != null and #authentication.principal.username == anuncio.usuario.username}">
+                            <a th:href="@{/anuncios/editar/{id}(id=${anuncio.id})}" class="btn btn-warning">Editar</a>
+                            <form th:action="@{/anuncios/eliminar/{id}(id=${anuncio.id})}" method="post" style="display: inline;">
+                                <button type="submit" class="btn btn-danger"
+                                        onclick="return confirm('¿Seguro que quieres eliminar este anuncio?');">
+                                    Eliminar
+                                </button>
+                            </form>
+                        </span>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mostrar número total de anuncios -->
+    <p class="mt-4 text-center">Total anuncios: <span th:text="${totalAnuncios}"></span></p>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

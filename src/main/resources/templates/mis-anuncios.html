@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mis Anuncios - EnUnClick</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <style>
+    /* Estilos generales */
+    body {
+      background-color: #121212; /* Fondo oscuro */
+      color: #ffffff; /* Texto blanco */
+    }
+
+    .container {
+      background: #1e1e1e; /* Fondo más oscuro para el contenedor */
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    /* Estilos para las tarjetas */
+    .card {
+      transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+      border: none;
+      background-color: #2a2a2a; /* Fondo oscuro en tarjetas */
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.5);
+    }
+
+    .card img {
+      border-top-left-radius: 8px;
+      border-top-right-radius: 8px;
+      height: 250px;
+      object-fit: cover;
+    }
+
+    /* Botones */
+    .btn-danger, .btn-warning, .btn-primary, .btn-success {
+      transition: background 0.3s ease-in-out;
+    }
+
+    .btn-danger:hover {
+      background-color: #c82333;
+    }
+
+    .btn-warning:hover {
+      background-color: #e0a800;
+    }
+
+    .btn-primary:hover {
+      background-color: #0056b3;
+    }
+
+    .btn-success:hover {
+      background-color: #218838;
+    }
+    .card-body {
+      color: #ffffff; /* Establecer texto blanco dentro de las tarjetas */
+    }
+
+    /* Mensaje cuando no hay anuncios */
+    .no-anuncios {
+      text-align: center;
+      color: #6c757d;
+      font-size: 1.2em;
+      margin-top: 20px;
+    }
+
+    /* Colores de texto en blanco para los mensajes de alerta */
+    .alert {
+      color: white;
+    }
+
+    .alert-success {
+      background-color: #28a745;
+    }
+
+    .alert-danger {
+      background-color: #dc3545;
+    }
+
+    /* Estilo para las etiquetas y texto de navegación */
+    .navbar-nav .nav-link, .form-check-label {
+      color: white;
+    }
+
+    .navbar-nav .nav-link:hover, .form-check-label:hover {
+      color: #007bff;
+    }
+
+    /* Fondo oscuro para la barra de navegación */
+    .navbar {
+      background-color: #333;
+    }
+
+    /* Asegurar que el texto del navbar sea blanco */
+    .navbar-nav .nav-link {
+      color: white;
+    }
+  </style>
+</head>
+<body>
+<div class="container mt-4">
+  <h1 class="mb-4 text-center">Mis Anuncios</h1>
+
+  <!-- Mensajes de éxito -->
+  <div th:if="${success}" class="alert alert-success" role="alert">
+    <span th:text="${success}"></span>
+  </div>
+
+  <!-- Mensajes de error -->
+  <div th:if="${error}" class="alert alert-danger" role="alert">
+    <span th:text="${error}"></span>
+  </div>
+
+  <!-- Botón para crear un nuevo anuncio -->
+  <div class="mb-4 text-center" sec:authorize="isAuthenticated()">
+    <a href="/anuncios/nuevo" class="btn btn-success">Crear Anuncio</a>
+  </div>
+
+  <!-- Menú de navegación -->
+  <nav class="navbar navbar-expand-lg navbar-light bg-dark mb-4">
+    <div class="container-fluid">
+      <a class="navbar-brand text-white" href="/">Inicio</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+              aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item" sec:authorize="isAuthenticated()">
+            <a class="nav-link active" href="/anuncios/mis-anuncios">Mis Anuncios</a>
+          </li>
+          <li class="nav-item" sec:authorize="isAuthenticated()">
+            <span class="nav-link text-primary">
+              <strong>Bienvenido, </strong><span th:text="${#authentication.principal.username}"></span>
+            </span>
+          </li>
+          <li class="nav-item" sec:authorize="isAnonymous()">
+            <a class="nav-link" href="/login">Iniciar sesión</a>
+          </li>
+          <li class="nav-item" sec:authorize="isAuthenticated()">
+            <form th:action="@{/logout}" method="post">
+              <button type="submit" class="btn btn-link nav-link text-white">Cerrar sesión</button>
+            </form>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Listado de anuncios -->
+  <div class="row">
+    <div class="col-md-4 mb-4" th:each="anuncio : ${anuncios}">
+      <div class="card">
+        <!-- Mostrar imagen si existe, si no mostrar una imagen por defecto -->
+        <img th:src="${not #lists.isEmpty(anuncio.fotos) ? '/uploads/' + anuncio.fotos.get(0).nombreArchivo : '/images/no-image.jpg'}"
+             class="card-img-top img-fluid"
+             alt="Imagen del anuncio">
+
+        <div class="card-body">
+          <h5 class="card-title" th:text="${anuncio.titulo}"></h5>
+          <p class="card-text">
+            <strong th:text="${#numbers.formatDecimal(anuncio.precio, 1, 2) + ' €'}"></strong>
+          </p>
+
+          <!-- Botones de acción -->
+          <div class="d-flex justify-content-between">
+            <a th:href="@{/anuncios/ver/{id}(id=${anuncio.id})}" class="btn btn-primary">Ver</a>
+            <a th:href="@{/anuncios/editar/{id}(id=${anuncio.id})}" class="btn btn-warning">Editar</a>
+            <form th:action="@{/anuncios/eliminar/{id}(id=${anuncio.id})}" method="post" style="display: inline;">
+              <button type="submit" class="btn btn-danger"
+                      onclick="return confirm('¿Seguro que quieres eliminar este anuncio?');">
+                Eliminar
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mostrar mensaje si no hay anuncios -->
+  <p class="no-anuncios" th:if="${#lists.isEmpty(anuncios)}">Aún no tienes anuncios publicados.</p>
+
+  <!-- Mostrar número total de anuncios -->
+  <p class="mt-4 text-center">Total anuncios: <span th:text="${totalAnuncios}"></span></p>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

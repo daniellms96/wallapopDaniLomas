@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalles del Anuncio</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+        /* Modo oscuro general */
+        body {
+            background-color: #121212;
+            color: #e0e0e0;
+        }
+
+        /* Contenedor principal */
+        .contenedor-anuncio {
+            max-width: 600px;
+            margin: auto;
+            padding: 20px;
+            background: #1e1e1e;
+            border-radius: 10px;
+            box-shadow: 0px 0px 15px rgba(255, 255, 255, 0.1);
+        }
+
+        /* Imágenes del carrusel */
+        .carousel-item img {
+            max-height: 350px;
+            width: 100%;
+            object-fit: contain;
+            border-radius: 8px;
+            background-color: #252525;
+        }
+
+        /* Botones del carrusel */
+        .carousel-control-prev-icon, .carousel-control-next-icon {
+            background-color: rgba(255, 255, 255, 0.6);
+            padding: 15px;
+            border-radius: 50%;
+        }
+
+        .carousel-control-prev:hover .carousel-control-prev-icon,
+        .carousel-control-next:hover .carousel-control-next-icon {
+            background-color: rgba(255, 255, 255, 1);
+        }
+
+        /* Títulos y texto */
+        h1 {
+            font-size: 1.8rem;
+            text-align: center;
+            margin-bottom: 20px;
+            color: #f5f5f5;
+        }
+
+        p {
+            font-size: 1.1rem;
+        }
+
+        /* Botón estilizado */
+        .btn-primary {
+            display: block;
+            width: 100%;
+            text-align: center;
+            margin-top: 15px;
+            background-color: #007bff;
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+<div class="container mt-4">
+    <div class="contenedor-anuncio">
+        <h1 th:text="${anuncio.titulo}"></h1>
+
+        <!-- Carrusel de imágenes -->
+        <div th:if="${not #lists.isEmpty(anuncio.fotos)}" id="carouselAnuncio" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+                <div class="carousel-item" th:each="foto, iterStat : ${anuncio.fotos}" th:classappend="${iterStat.index == 0} ? 'active'">
+                    <img th:src="@{/uploads/{filename}(filename=${foto.nombreArchivo})}" class="d-block w-100" alt="Imagen del anuncio">
+                </div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselAnuncio" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Anterior</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselAnuncio" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Siguiente</span>
+            </button>
+        </div>
+
+        <p><strong>Precio:</strong> <span th:text="${#numbers.formatDecimal(anuncio.precio, 1, 2)} + ' €'"></span></p>
+        <p><strong>Descripción:</strong> <span th:text="${anuncio.descripcion}"></span></p>
+
+        <a href="/" class="btn btn-primary">Volver al inicio</a>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
