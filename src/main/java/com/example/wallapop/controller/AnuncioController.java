@@ -45,7 +45,7 @@ public class AnuncioController {
     private FotoRepository fotoRepository;
 
     private final AnuncioService anuncioService;
-    private final UsuarioService usuarioService; // ✅ Usa UsuarioService en lugar de usuarioRepository
+    private final UsuarioService usuarioService;
 
     @Autowired
     public AnuncioController(AnuncioService anuncioService, UsuarioService usuarioService) {
@@ -77,12 +77,11 @@ public class AnuncioController {
                                  @RequestParam(value = "eliminarFotos", required = false) List<Long> eliminarFotos,
                                  Model model) {
 
-        // Obtener el usuario autenticado
+        // Obtener el usuario autenticado.
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String email = auth.getName();
-        String username = auth.getName(); // Obtener el nombre de usuario autenticado
+        String username = auth.getName();
         Usuario usuario = usuarioRepository.findByUsername(username).orElse(null);
-
 
         if (usuario == null) {
             return "redirect:/login";
@@ -113,7 +112,6 @@ public class AnuncioController {
         anuncio.setDescripcion(descripcion);
         anuncioRepository.save(anuncio);
 
-        // 📌 ELIMINAR IMÁGENES SELECCIONADAS
         if (eliminarFotos != null) {
             for (Long fotoId : eliminarFotos) {
                 Optional<Foto> fotoOpt = fotoRepository.findById(fotoId);
@@ -130,7 +128,6 @@ public class AnuncioController {
             }
         }
 
-        // 📌 SI SE SUBEN NUEVAS FOTOS, SE GUARDAN
         if (fotos != null && fotos.length > 0 && !fotos[0].isEmpty()) {
             Path uploadDir = Paths.get("uploads");
             try {
@@ -198,7 +195,7 @@ public class AnuncioController {
         }
 
         model.addAttribute("anuncio", anuncioOpt.get());
-        return "detalle-anuncio"; // Nombre del HTML donde se muestran los detalles
+        return "detalle-anuncio";
     }
 
 
@@ -213,18 +210,16 @@ public class AnuncioController {
 
         Anuncio anuncio = anuncioOpt.get();
 
-        // Verificar si el anuncio tiene un usuario asignado
         if (anuncio.getUsuario() == null) {
             redirectAttributes.addFlashAttribute("error", "Error: Este anuncio no tiene un propietario asignado.");
             return "redirect:/";
         }
 
-        // Obtener el usuario autenticado
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String username = auth.getName();
         Usuario usuario = usuarioRepository.findByUsername(username).orElse(null);
 
-        // Verificar si el usuario autenticado es el dueño del anuncio
+        // Verificar si el usuario autenticado es el dueño del anuncio.
         if (usuario == null || !anuncio.getUsuario().getId().equals(usuario.getId())) {
             redirectAttributes.addFlashAttribute("error", "No puedes editar este anuncio porque no te pertenece.");
             return "redirect:/anuncios";
@@ -246,7 +241,6 @@ public class AnuncioController {
 
         Anuncio anuncio = anuncioOpt.get();
 
-        // Obtener el usuario autenticado
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String username = auth.getName();
         Usuario usuario = usuarioRepository.findByUsername(username).orElse(null);
@@ -280,10 +274,5 @@ public class AnuncioController {
 
         return "mis-anuncios";
     }
-
-
-
-
-
 
 }

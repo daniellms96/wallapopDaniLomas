@@ -14,6 +14,7 @@ public class HomeController {
     @Autowired
     private AnuncioRepository anuncioRepository;
 
+    // Devuelve la vista principal de la aplicación.
     @GetMapping("/")
     public String home(Model model) {
         List<Anuncio> anuncios = anuncioRepository.findAllByOrderByFechaCreacionDesc();

@@ -7,13 +7,11 @@
     <title>EnUnClick</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <style>
-        /* Modo oscuro */
         body {
             background-color: #121212;
             color: #e0e0e0;
         }
 
-        /* Navbar */
         .navbar {
             background-color: #333 !important;
         }
@@ -22,7 +20,6 @@
             color: #fff !important;
         }
 
-        /* Tarjetas de anuncios */
         .card {
             background-color: #1e1e1e;
             border-radius: 10px;
@@ -35,14 +32,13 @@
         }
 
         .card-body {
-            color: white;  /* Aseguramos que el texto dentro de la tarjeta sea blanco */
+            color: white;
         }
 
         .card-title, .card-text {
-            color: white;  /* Aseguramos que el título y el texto dentro de la tarjeta sean blancos */
+            color: white;
         }
 
-        /* Botones */
         .btn-success {
             background-color: #28a745;
             border: none;
@@ -80,18 +76,15 @@
             background-color: #0056b3;
         }
 
-        /* Botón de cerrar sesión rojo */
         .btn-link {
             color: #dc3545 !important;
         }
 
-        /* Imágenes */
         .card-img-top {
             border-radius: 10px 10px 0 0;
             object-fit: cover;
         }
 
-        /* Mensajes de éxito y error */
         .alert {
             background-color: #222;
             border: 1px solid #444;
@@ -190,7 +183,6 @@
     <p class="mt-4 text-center">Total anuncios: <span th:text="${totalAnuncios}"></span></p>
 </div>
 
-<!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

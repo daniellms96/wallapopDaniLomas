@@ -1,6 +1,5 @@
 package com.example.wallapop.services;
 
-
 import com.example.wallapop.entities.Usuario;
 import com.example.wallapop.repositories.UsuarioRepository;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

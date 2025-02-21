@@ -19,6 +19,7 @@ public class AuthController {
         this.passwordEncoder = passwordEncoder;
     }
 
+    // Métodos para el registro y login de usuarios.
     @GetMapping("/registro")
     public String mostrarFormularioRegistro(Model model) {
         model.addAttribute("usuario", new Usuario());
@@ -27,7 +28,8 @@ public class AuthController {
 
     @PostMapping("/registro")
     public String registrarUsuario(@ModelAttribute Usuario usuario) {
-        usuario.setPassword(passwordEncoder.encode(usuario.getPassword()));  // Encripta la contraseña
+        //Encriptación de la contraseña.
+        usuario.setPassword(passwordEncoder.encode(usuario.getPassword()));
         usuarioRepository.save(usuario);
         return "redirect:/login";
     }

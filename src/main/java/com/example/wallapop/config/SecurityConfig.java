@@ -15,13 +15,15 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/", "/login", "/registro", "/css/**", "/js/**", "/uploads/**").permitAll()
-                        .requestMatchers("/anuncios", "/anuncios/ver/**").permitAll() // ✅ Cualquiera puede ver anuncios
-                        .requestMatchers("/anuncios/nuevo", "/anuncios/guardar", "/anuncios/editar/**", "/anuncios/eliminar/**").authenticated() // ✅ Solo logeados pueden editar/eliminar
+                        //Para que cualquier usuario pueda ver todos los anuncios.
+                        .requestMatchers("/anuncios", "/anuncios/ver/**").permitAll()
+                        //Para que solo los usuarios logeados puedan acceder a las rutas de anuncios.
+                        .requestMatchers("/anuncios/nuevo", "/anuncios/guardar", "/anuncios/editar/**", "/anuncios/eliminar/**").authenticated()
                         .anyRequest().authenticated()
                 )
                 .formLogin(login -> login
                         .loginPage("/login")
-                        .usernameParameter("username") // ✅ Usa "username" en vez de "email"
+                        .usernameParameter("username")
                         .passwordParameter("password")
                         .defaultSuccessUrl("/", true)
                         .permitAll()
@@ -31,7 +33,7 @@ public class SecurityConfig {
                         .logoutSuccessUrl("/")
                         .permitAll()
                 )
-                .csrf(csrf -> csrf.disable()); // ❗ Solo si necesitas deshabilitar CSRF
+                .csrf(csrf -> csrf.disable());
 
         return http.build();
     }

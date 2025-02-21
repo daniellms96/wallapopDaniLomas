@@ -12,10 +12,10 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        Path uploadDir = Paths.get("uploads"); // Carpeta donde guardas las imágenes
+        Path uploadDir = Paths.get("uploads"); // Carpeta donde se guardarán las imágenes.
         String uploadPath = uploadDir.toFile().getAbsolutePath();
 
         registry.addResourceHandler("/uploads/**")
-                .addResourceLocations("file:" + uploadPath + "/"); // Asegúrate de incluir la barra al final
+                .addResourceLocations("file:" + uploadPath + "/");
     }
 }

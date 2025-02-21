@@ -21,7 +21,7 @@ public class UsuarioService {
 
     public Usuario findByUsername(String username) {
         Optional<Usuario> usuarioOpt = usuarioRepository.findByUsername(username);
-        return usuarioOpt.orElse(null); // Devuelve null si no lo encuentra
+        return usuarioOpt.orElse(null);
     }
 }
 

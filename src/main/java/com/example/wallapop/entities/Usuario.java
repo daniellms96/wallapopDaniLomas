@@ -24,14 +24,14 @@ public class Usuario {
     private String password;
 
     @Column(unique = true, nullable = false)
-    private String username; // Cambio para usar nombre de usuario
+    private String username;
 
     private String nombre;
     private String telefono;
     private String poblacion;
 
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @ToString.Exclude  // Evita problemas de recursión infinita en toString()
+    @ToString.Exclude  // Para evitar bucle infinito.
     private List<Anuncio> anuncios;
 
     public Long getId() {

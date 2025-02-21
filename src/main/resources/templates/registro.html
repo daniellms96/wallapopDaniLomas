@@ -6,44 +6,39 @@
     <title>Registro - DaniPop</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <style>
-        /* Fondo oscuro para la página */
         body {
             background-color: #121212;
             color: #e0e0e0;
         }
 
-        /* Estilo para el contenedor de registro */
         .container {
-            background: #1e1e1e;  /* Fondo oscuro */
+            background: #1e1e1e;
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
             max-width: 400px;
         }
 
-        /* Estilo para las etiquetas y controles */
         .form-label {
-            color: #e0e0e0;  /* Color blanco */
+            color: #e0e0e0;
         }
 
         .form-control {
-            background-color: #343a40;  /* Fondo oscuro para inputs */
-            color: #ffffff;  /* Texto blanco */
-            border: 1px solid #6c757d;  /* Borde gris */
+            background-color: #343a40;
+            color: #ffffff;
+            border: 1px solid #6c757d;
         }
 
         .form-control:focus {
-            border-color: #80bdff;  /* Borde azul claro en foco */
+            border-color: #80bdff;
             background-color: #343a40;
             color: white;
         }
 
-        /* Estilo para los placeholders */
         .form-control::placeholder {
-            color: #ffffff;  /* Placeholder blanco */
+            color: #ffffff;
         }
 
-        /* Estilo para los botones */
         .btn-success {
             background-color: #28a745;
             color: white;
@@ -51,10 +46,9 @@
         }
 
         .btn-success:hover {
-            background-color: #218838;  /* Color más oscuro al pasar el ratón */
+            background-color: #218838;
         }
 
-        /* Estilo para el texto del toggle de contraseña */
         .toggle-password {
             color: #e0e0e0;
             cursor: pointer;
@@ -64,12 +58,10 @@
             transform: translateY(-50%);
         }
 
-        /* Enlace de texto en blanco */
         a {
             color: #007bff;
         }
 
-        /* Color de texto principal en el contenedor */
         h2, p {
             color: #ffffff;
         }
@@ -80,38 +72,32 @@
     <h2 class="text-center">Registro</h2>
     <form th:action="@{/registro}" method="post">
 
-        <!-- Nombre de usuario -->
         <div class="mb-3">
             <label for="username" class="form-label">Nombre de usuario</label>
             <input type="text" id="username" name="username" class="form-control" required>
         </div>
 
-        <!-- Nombre completo -->
         <div class="mb-3">
             <label for="nombre" class="form-label">Nombre Completo</label>
             <input type="text" id="nombre" name="nombre" class="form-control" required>
         </div>
 
-        <!-- Correo electrónico -->
         <div class="mb-3">
             <label for="email" class="form-label">Correo Electrónico</label>
             <input type="email" id="email" name="email" class="form-control" placeholder="ejemplo@email.com" required>
         </div>
 
-        <!-- Población -->
         <div class="mb-3">
             <label for="poblacion" class="form-label">Población</label>
             <input type="text" id="poblacion" name="poblacion" class="form-control" >
         </div>
 
-        <!-- Teléfono -->
         <div class="mb-3">
             <label for="telefono" class="form-label">Teléfono</label>
             <input type="text" id="telefono" name="telefono" class="form-control"
                    pattern="\d{9}" title="Debe contener 9 dígitos" placeholder="Ejemplo: 123456789">
         </div>
 
-        <!-- Contraseña con botón para mostrar/ocultar -->
         <div class="mb-3 position-relative">
             <label for="password" class="form-label">Contraseña</label>
             <input type="password" id="password" name="password" class="form-control" required
@@ -127,7 +113,7 @@
     </div>
 </div>
 
-<!-- Bootstrap JS -->
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 

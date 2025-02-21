@@ -7,24 +7,22 @@
   <title>Mis Anuncios - EnUnClick</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
   <style>
-    /* Estilos generales */
     body {
-      background-color: #121212; /* Fondo oscuro */
-      color: #ffffff; /* Texto blanco */
+      background-color: #121212;
+      color: #ffffff;
     }
 
     .container {
-      background: #1e1e1e; /* Fondo más oscuro para el contenedor */
+      background: #1e1e1e;
       padding: 20px;
       border-radius: 8px;
       box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
     }
 
-    /* Estilos para las tarjetas */
     .card {
       transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
       border: none;
-      background-color: #2a2a2a; /* Fondo oscuro en tarjetas */
+      background-color: #2a2a2a;
     }
 
     .card:hover {
@@ -39,7 +37,6 @@
       object-fit: cover;
     }
 
-    /* Botones */
     .btn-danger, .btn-warning, .btn-primary, .btn-success {
       transition: background 0.3s ease-in-out;
     }
@@ -60,10 +57,9 @@
       background-color: #218838;
     }
     .card-body {
-      color: #ffffff; /* Establecer texto blanco dentro de las tarjetas */
+      color: #ffffff;
     }
 
-    /* Mensaje cuando no hay anuncios */
     .no-anuncios {
       text-align: center;
       color: #6c757d;
@@ -71,7 +67,6 @@
       margin-top: 20px;
     }
 
-    /* Colores de texto en blanco para los mensajes de alerta */
     .alert {
       color: white;
     }
@@ -84,7 +79,6 @@
       background-color: #dc3545;
     }
 
-    /* Estilo para las etiquetas y texto de navegación */
     .navbar-nav .nav-link, .form-check-label {
       color: white;
     }
@@ -93,12 +87,10 @@
       color: #007bff;
     }
 
-    /* Fondo oscuro para la barra de navegación */
     .navbar {
       background-color: #333;
     }
 
-    /* Asegurar que el texto del navbar sea blanco */
     .navbar-nav .nav-link {
       color: white;
     }
@@ -158,7 +150,6 @@
   <div class="row">
     <div class="col-md-4 mb-4" th:each="anuncio : ${anuncios}">
       <div class="card">
-        <!-- Mostrar imagen si existe, si no mostrar una imagen por defecto -->
         <img th:src="${not #lists.isEmpty(anuncio.fotos) ? '/uploads/' + anuncio.fotos.get(0).nombreArchivo : '/images/no-image.jpg'}"
              class="card-img-top img-fluid"
              alt="Imagen del anuncio">
@@ -192,7 +183,6 @@
   <p class="mt-4 text-center">Total anuncios: <span th:text="${totalAnuncios}"></span></p>
 </div>
 
-<!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
